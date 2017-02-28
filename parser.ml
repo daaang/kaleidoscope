@@ -29,3 +29,24 @@ parse_primary = parser
 
 and parse_expr = parser
   | [< lhs=parse_primary; stream >] -> parse_bin_rhs 0 lhs stream
+
+and parse_bin_rhs expr_prec lhs stream =
+  match Stream.peek stream with
+  | Some (Token.Kwd c) when Hashtbl.mem binop_precedence c ->
+      let token_prec = precedence c in
+      if token_prec < expr_prec then lhs else begin
+        Stream.junk stream;
+        let rhs = parse_primary stream in
+        let rhs =
+          match Stream.peek stream with
+          | Some (Token.Kwd c2) ->
+              let next_prec = precedence c2 in
+              if token_prec < next_prec
+              then parse_bin_rhs (token_prec + 1) rhs stream
+              else rhs
+          | _ -> rhs
+        in
+
+        let lhs = Ast.Binary (c, lhs, rhs) in
+        parse_bin_rhs expr_prec lhs stream
+      end
