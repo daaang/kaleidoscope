@@ -50,6 +50,7 @@ and parse_bin_rhs expr_prec lhs stream =
         let lhs = Ast.Binary (c, lhs, rhs) in
         parse_bin_rhs expr_prec lhs stream
       end
+  | _ -> lhs
 
 let parse_prototype =
   let rec parse_args accumulator = parser
