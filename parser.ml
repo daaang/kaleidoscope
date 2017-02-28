@@ -69,3 +69,6 @@ let parse_prototype =
 let parse_definition = parser
   | [< 'Token.Def; p=parse_prototype; e=parse_expr >] ->
       Ast.Function (p, e)
+
+let parse_extern = parser
+  | [< 'Token.Extern; e=parse_prototype >] -> e
