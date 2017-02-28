@@ -3,6 +3,11 @@ let main () =
   Hashtbl.add Parser.binop_precedence '+' 20;
   Hashtbl.add Parser.binop_precedence '-' 20;
   Hashtbl.add Parser.binop_precedence '*' 40;
+
+  print_string "ready> "; flush stdout;
+  let stream = Lexer.lex (Stream.of_channel stdin) in
+
+  Driver.main_loop stream;
 ;;
 
 main ()
