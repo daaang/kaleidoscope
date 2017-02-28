@@ -26,3 +26,6 @@ parse_primary = parser
       parse_ident id stream
 
   | [< >] -> raise (Stream.Error "unknown token when expecting an expression.")
+
+and parse_expr = parser
+  | [< lhs=parse_primary; stream >] -> parse_bin_rhs 0 lhs stream
