@@ -7,3 +7,7 @@ type token =
 
   (* unknown *)
   | Kwd of char
+
+let rec lex = parser
+  (* skip whitespace *)
+  | [< ' (' ' | '\n' | '\r' | '\t'); stream >] -> lex stream
