@@ -5,4 +5,4 @@ clean:
 	rm -rf toy.byte _build
 
 test: toy.byte
-	true
+	make clean
