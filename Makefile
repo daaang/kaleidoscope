@@ -1,2 +1,2 @@
 toy.byte:
-	ocaml toy.byte
+	ocamlbuild toy.byte
