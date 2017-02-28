@@ -28,6 +28,13 @@ let rec lex = parser
   | [< ' ('#'); stream >] ->
       lex_comment stream
 
+  (* kwd char *)
+  | [< 'c; stream >] ->
+      [< 'Token.Kwd c; lex stream >]
+
+  (* EOF *)
+  | [< >] -> [< >]
+
 and lex_ident buffer = parser
   | [< ' ('A' .. 'Z' | 'a' .. 'z' | '0' .. '9' as c); stream >] ->
       Buffer.add_char buffer c;
