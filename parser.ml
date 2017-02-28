@@ -1,3 +1,6 @@
+let binop_precedence:(char, int) Hashtbl.t = Hashtbl.create 10
+let precedence c = try Hashtbl.find binop_precedence c with Not_found -> -1
+
 parse_primary = parser
   | [< 'Token.Number n >] -> Ast.Number n
 
