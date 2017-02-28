@@ -65,3 +65,7 @@ let parse_prototype =
         Ast.Prototype (id, Array.of_list (List.rev args))
     | [< >] ->
         raise (Stream.Error "expected function name in prototype")
+
+let parse_definition = parser
+  | [< 'Token.Def; p=parse_prototype; e=parse_expr >] ->
+      Ast.Function (p, e)
