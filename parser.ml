@@ -50,3 +50,18 @@ and parse_bin_rhs expr_prec lhs stream =
         let lhs = Ast.Binary (c, lhs, rhs) in
         parse_bin_rhs expr_prec lhs stream
       end
+
+let parse_prototype =
+  let rec parse_args accumulator = parser
+    | [< 'Token.Ident id; e=parse_args (id::accumulator) >] -> e
+    | [< >] -> accumulator
+  in
+
+  parser
+    | [< 'Token.Ident id;
+          'Token.Kwd '(' ?? "expected '(' in prototype";
+          args=parse_args [];
+          'Token.Kwd ')' ?? "expected ')' in prototype" >] ->
+        Ast.Prototype (id, Array.of_list (List.rev args))
+    | [< >] ->
+        raise (Stream.Error "expected function name in prototype")
